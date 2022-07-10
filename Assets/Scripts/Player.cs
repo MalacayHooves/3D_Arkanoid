@@ -5,8 +5,9 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField, Tooltip("Скорость перемещения платформы игрока")] private float _movementSpeed = 1;
-    [SerializeField, Tooltip("Инерция перемещения платформы игрока")] private float _slowDownSpeed = 1;
+    [SerializeField, Tooltip("Скорость перемещения платформы игрока в начале движения")] private float _movementSpeed = 1;
+    [SerializeField, Tooltip("Ускорение платформы игрока")] private float _raisingUpSpeed = 1.1f;
+    [SerializeField, Tooltip("Замедление платформы игрока")] private float _slowDownSpeed = 1;
 
     private InputActionsAsset _input;
     private InputAction _playerMovement;
@@ -113,7 +114,7 @@ public class Player : MonoBehaviour
 
         if (movementSpeed > 0)
         {
-            _movementCoroutine = StartCoroutine(MovementCoroutine(input, movementSpeed));
+            _movementCoroutine = StartCoroutine(MovementCoroutine(input * _raisingUpSpeed, movementSpeed));
         }
     }
 }

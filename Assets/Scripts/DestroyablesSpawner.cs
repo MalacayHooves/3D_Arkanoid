@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DestroyablesSpawner : MonoBehaviour
 {
-    private List<GameObject> _destroyableObjectsList = null;
+    [SerializeField, Tooltip("Список разрушаемых объектов")] private List<GameObject> _destroyableObjectsList = null;
     [SerializeField, Tooltip("Префаб разрушаемого объекта")] private GameObject _destroyableObject = null;
     [SerializeField, Range(1, 50), Tooltip("Количество спаунящихся объектов")] private int _numberOfObjects = 1;
     [SerializeField, Range(1, 10), Tooltip("Радиус спауна")] private float _spawnRadius = 1;
@@ -12,7 +12,7 @@ public class DestroyablesSpawner : MonoBehaviour
 
     private GameManager _gameManager;
 
-    private void OnEnable()
+    private void Start()
     {
         _gameManager = (GameManager)FindObjectOfType(typeof(GameManager));
         GameObject spawnedObject;
