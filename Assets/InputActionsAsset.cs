@@ -44,6 +44,15 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec1b1c62-144c-4dc9-bd75-db2e42d6252a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -156,6 +165,17 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
                     ""action"": ""PlayerTwoMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa4f848a-d9cd-4d77-981e-c8fdf2e6a86e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -166,6 +186,7 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
         m_MainMap = asset.FindActionMap("MainMap", throwIfNotFound: true);
         m_MainMap_PlayerOneMovement = m_MainMap.FindAction("PlayerOneMovement", throwIfNotFound: true);
         m_MainMap_PlayerTwoMovement = m_MainMap.FindAction("PlayerTwoMovement", throwIfNotFound: true);
+        m_MainMap_Pause = m_MainMap.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,12 +248,14 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
     private IMainMapActions m_MainMapActionsCallbackInterface;
     private readonly InputAction m_MainMap_PlayerOneMovement;
     private readonly InputAction m_MainMap_PlayerTwoMovement;
+    private readonly InputAction m_MainMap_Pause;
     public struct MainMapActions
     {
         private @InputActionsAsset m_Wrapper;
         public MainMapActions(@InputActionsAsset wrapper) { m_Wrapper = wrapper; }
         public InputAction @PlayerOneMovement => m_Wrapper.m_MainMap_PlayerOneMovement;
         public InputAction @PlayerTwoMovement => m_Wrapper.m_MainMap_PlayerTwoMovement;
+        public InputAction @Pause => m_Wrapper.m_MainMap_Pause;
         public InputActionMap Get() { return m_Wrapper.m_MainMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -248,6 +271,9 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
                 @PlayerTwoMovement.started -= m_Wrapper.m_MainMapActionsCallbackInterface.OnPlayerTwoMovement;
                 @PlayerTwoMovement.performed -= m_Wrapper.m_MainMapActionsCallbackInterface.OnPlayerTwoMovement;
                 @PlayerTwoMovement.canceled -= m_Wrapper.m_MainMapActionsCallbackInterface.OnPlayerTwoMovement;
+                @Pause.started -= m_Wrapper.m_MainMapActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_MainMapActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_MainMapActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_MainMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -258,6 +284,9 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
                 @PlayerTwoMovement.started += instance.OnPlayerTwoMovement;
                 @PlayerTwoMovement.performed += instance.OnPlayerTwoMovement;
                 @PlayerTwoMovement.canceled += instance.OnPlayerTwoMovement;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -266,5 +295,6 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
     {
         void OnPlayerOneMovement(InputAction.CallbackContext context);
         void OnPlayerTwoMovement(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

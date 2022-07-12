@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
             _lives = value;
             if (_lives <= 0)
             {
-                LosingGame();
+                ManageDefeat();
             }
         }
     }
@@ -22,29 +22,21 @@ public class GameManager : MonoBehaviour
     private List<GameObject> _destroyableObjectsList = null;
 
     private LevelManager _levelManager;
+    private Healthbar[] _healthbars;
 
     private void Start()
     {
-        _levelManager = (LevelManager)FindObjectOfType(typeof(LevelManager));
+        _levelManager = FindObjectOfType<LevelManager>();
+        _healthbars = FindObjectsOfType<Healthbar>();
     }
 
-    //public List<GameObject> DestroyableObjectsList
-    //{
-    //    get { return _destroyableObjectsList; }
-    //    set
-    //    {
-    //        _destroyableObjectsList = value;
-    //        if (_destroyableObjectsList.Count <= 0)
-    //        {
-    //            WinningGame();
-    //        }
-    //    }
-    //}
-
-    public void BallHittedGates()
+    public void ManageBallHittedGatesSituation()
     {
         Lives--;
-        print($"Lives: {_lives}");
+        foreach (Healthbar item in _healthbars)
+        {
+            item.DecreaseHealth();
+        }
 
         StartCoroutine(ResetBall());
     }
@@ -59,12 +51,13 @@ public class GameManager : MonoBehaviour
         _destroyableObjectsList.Remove(destroyable);
         if (_destroyableObjectsList.Count <= 0)
         {
-            WinningGame();
+            ManageVictory();
         }
     }
 
     private IEnumerator ResetBall()
     {
+        if (_ball == null) yield break;
         _ball.enabled = false;
         _ball.transform.position = _ballSpawnPoint.transform.position;
         _ball.transform.rotation = _ballSpawnPoint.transform.rotation;
@@ -77,12 +70,12 @@ public class GameManager : MonoBehaviour
         _ball.enabled = true;
     }
 
-    private void LosingGame()
+    private void ManageDefeat()
     {
         print("You lose.");
     }
 
-    private void WinningGame()
+    private void ManageVictory()
     {
         StartCoroutine(ResetBall());
         print("You won!");

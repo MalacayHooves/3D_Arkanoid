@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DestroyablesSpawner : MonoBehaviour
@@ -14,7 +13,7 @@ public class DestroyablesSpawner : MonoBehaviour
 
     private void Start()
     {
-        _gameManager = (GameManager)FindObjectOfType(typeof(GameManager));
+        _gameManager = FindObjectOfType<GameManager>();
         GameObject spawnedObject;
         Vector3 spawnCentre = new Vector3(0, 0, 15);
         Vector3 spawnPoint;

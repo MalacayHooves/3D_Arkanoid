@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -57,6 +56,8 @@ public class Player : MonoBehaviour
 
     private void Movement(InputAction.CallbackContext context)
     {
+        if (Time.timeScale == 0) return;
+
         if (context.started)
         {
             if (_movementCoroutine != null) StopCoroutine(_movementCoroutine);

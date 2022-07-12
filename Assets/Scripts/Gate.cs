@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
@@ -8,14 +6,14 @@ public class Gate : MonoBehaviour
 
     private void Start()
     {
-        _gameManager = (GameManager)FindObjectOfType(typeof(GameManager));
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.name == "Ball")
+        if (collision.collider.TryGetComponent(out Ball ball))
         {
-            _gameManager.BallHittedGates();
+            _gameManager.ManageBallHittedGatesSituation();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DestroyableObject : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class DestroyableObject : MonoBehaviour
 
     private void Start()
     {
-        _gameManager = (GameManager)FindObjectOfType(typeof(GameManager));
+        _gameManager = FindObjectOfType<GameManager>();
         _light = GetComponent<Light>();
         _meshRenderer = GetComponent<MeshRenderer>();
         Color color = GetColor(Random.Range(1, 5));
@@ -20,7 +18,7 @@ public class DestroyableObject : MonoBehaviour
 
     private void OnDisable()
     {
-        _gameManager.RemoveFromDestroyableObjectsList(gameObject);
+        if (_gameManager != null) _gameManager.RemoveFromDestroyableObjectsList(gameObject);
     }
 
     private Color GetColor(int number)
