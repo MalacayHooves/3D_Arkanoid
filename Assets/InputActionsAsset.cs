@@ -178,6 +178,78 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SecondMap"",
+            ""id"": ""5424b128-45c8-4e45-9910-f678cc1eafc3"",
+            ""actions"": [
+                {
+                    ""name"": ""PlayerOneMovement"",
+                    ""type"": ""Value"",
+                    ""id"": ""b23a1b74-15ba-45ac-a0f7-d6eb92180784"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""IJKL"",
+                    ""id"": ""66e34aff-6a1d-4ec9-8f50-a70968077941"",
+                    ""path"": ""2DVector(mode=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerOneMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9c3e8af0-c765-4c7c-9862-59b027b46b17"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerOneMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b405d63c-38ed-41d6-9f07-cadea16e88c8"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerOneMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""a0f321c6-9944-48d2-834c-0a951b9580fd"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerOneMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ae695f22-5db2-445d-9b50-9173ca339054"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerOneMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -187,6 +259,9 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
         m_MainMap_PlayerOneMovement = m_MainMap.FindAction("PlayerOneMovement", throwIfNotFound: true);
         m_MainMap_PlayerTwoMovement = m_MainMap.FindAction("PlayerTwoMovement", throwIfNotFound: true);
         m_MainMap_Pause = m_MainMap.FindAction("Pause", throwIfNotFound: true);
+        // SecondMap
+        m_SecondMap = asset.FindActionMap("SecondMap", throwIfNotFound: true);
+        m_SecondMap_PlayerOneMovement = m_SecondMap.FindAction("PlayerOneMovement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -291,10 +366,47 @@ public partial class @InputActionsAsset : IInputActionCollection2, IDisposable
         }
     }
     public MainMapActions @MainMap => new MainMapActions(this);
+
+    // SecondMap
+    private readonly InputActionMap m_SecondMap;
+    private ISecondMapActions m_SecondMapActionsCallbackInterface;
+    private readonly InputAction m_SecondMap_PlayerOneMovement;
+    public struct SecondMapActions
+    {
+        private @InputActionsAsset m_Wrapper;
+        public SecondMapActions(@InputActionsAsset wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlayerOneMovement => m_Wrapper.m_SecondMap_PlayerOneMovement;
+        public InputActionMap Get() { return m_Wrapper.m_SecondMap; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SecondMapActions set) { return set.Get(); }
+        public void SetCallbacks(ISecondMapActions instance)
+        {
+            if (m_Wrapper.m_SecondMapActionsCallbackInterface != null)
+            {
+                @PlayerOneMovement.started -= m_Wrapper.m_SecondMapActionsCallbackInterface.OnPlayerOneMovement;
+                @PlayerOneMovement.performed -= m_Wrapper.m_SecondMapActionsCallbackInterface.OnPlayerOneMovement;
+                @PlayerOneMovement.canceled -= m_Wrapper.m_SecondMapActionsCallbackInterface.OnPlayerOneMovement;
+            }
+            m_Wrapper.m_SecondMapActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PlayerOneMovement.started += instance.OnPlayerOneMovement;
+                @PlayerOneMovement.performed += instance.OnPlayerOneMovement;
+                @PlayerOneMovement.canceled += instance.OnPlayerOneMovement;
+            }
+        }
+    }
+    public SecondMapActions @SecondMap => new SecondMapActions(this);
     public interface IMainMapActions
     {
         void OnPlayerOneMovement(InputAction.CallbackContext context);
         void OnPlayerTwoMovement(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+    }
+    public interface ISecondMapActions
+    {
+        void OnPlayerOneMovement(InputAction.CallbackContext context);
     }
 }

@@ -27,7 +27,23 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _levelManager = FindObjectOfType<LevelManager>();
+        if (_levelManager == null)
+        {
+            Debug.LogWarning("There is no LevelManager");
+        }
+        else
+        {
+            print("There is LevelManager");
+        }
         _healthbars = FindObjectsOfType<Healthbar>();
+        if (_healthbars == null)
+        {
+            Debug.LogWarning("There is no Healthbars");
+        }
+        else
+        {
+            print("There is Healthbars");
+        }
     }
 
     public void ManageBallHittedGatesSituation()

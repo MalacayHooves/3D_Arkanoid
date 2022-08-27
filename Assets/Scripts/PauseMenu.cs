@@ -1,10 +1,11 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : MonoBehaviour, IObservable
 {
     private Animator _animator;
 
@@ -13,6 +14,9 @@ public class PauseMenu : MonoBehaviour
     private Button[] _buttons;
 
     private bool _isSettingsOpened;
+
+    public event Observer.SaveDataHandler OnSaveData;
+    public event Observer.ClearDataHandler OnClearData;
 
     private void Awake()
     {
@@ -51,7 +55,10 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        OnSaveData($"[{System.DateTime.Now}] End Game");
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+#endif
         Application.Quit();
     }
 
@@ -84,5 +91,15 @@ public class PauseMenu : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(1);
         SceneManager.LoadScene(sceneName, loadSceneMode);
+    }
+
+    public void GetData(List<string> listOfData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void WriteData(string data)
+    {
+        throw new System.NotImplementedException();
     }
 }

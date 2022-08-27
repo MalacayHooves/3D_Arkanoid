@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditor;
 
 public class Player : MonoBehaviour
 {
@@ -43,6 +44,14 @@ public class Player : MonoBehaviour
                 _input.MainMap.PlayerOneMovement.started += Movement;
                 _input.MainMap.PlayerOneMovement.canceled += Movement;
                 _playerMovement = _input.MainMap.PlayerOneMovement;
+#if UNITY_EDITOR
+                if (EditorApplication.isPlaying)
+                {
+                    _input.SecondMap.PlayerOneMovement.started += Movement;
+                    _input.SecondMap.PlayerOneMovement.canceled += Movement;
+                    _playerMovement = _input.SecondMap.PlayerOneMovement;
+                }
+#endif
                 break;
             case "PlayerTwo":
                 _input.MainMap.PlayerTwoMovement.started += Movement;
